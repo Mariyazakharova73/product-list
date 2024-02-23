@@ -1,24 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Layout, Spin } from 'antd';
+import { Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import s from './App.module.css';
+import { routeConfig } from './utils/config/routeConfig';
+
+const { Header, Footer, Content } = Layout;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={s.page}>
+      <Layout className={s.layout}>
+        <Header className={s.header}>Logo</Header>
+        <Content className={s.content}>
+          <Suspense fallback={<Spin size="large" tip="Loading..."/>}>
+            <Routes>
+              {Object.values(routeConfig).map(route => {
+                return (
+                  <Route key={route.path} path={route.path} element={route.element} />
+                );
+              })}
+            </Routes>
+          </Suspense>
+        </Content>
+        <Footer className={s.footer}>Footer</Footer>
+      </Layout>
     </div>
   );
 }
