@@ -14,7 +14,7 @@ export interface ProductState {
 }
 
 const initialState: ProductState = {
-  isLoadingPage: true,
+  isLoadingPage: false,
   isLoading: false,
   error: undefined,
 
@@ -33,7 +33,7 @@ export const productsSlice = createSlice({
     builder
       .addCase(fetchProductsIds.pending, state => {
         state.error = undefined;
-        state.isLoading = true;
+        state.isLoadingPage = true;
       })
       .addCase(fetchProductsIds.fulfilled, (state, action: PayloadAction<string[]>) => {
         state.allIds = action.payload;
@@ -44,7 +44,7 @@ export const productsSlice = createSlice({
         state.error = action.payload;
         state.isLoadingPage = false;
       });
-
+    // items
     builder
       .addCase(fetchItems.pending, state => {
         state.error = undefined;

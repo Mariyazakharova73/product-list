@@ -12,7 +12,6 @@ import {
 import {
   filteredAllIds,
   filteredProductsFullInfo,
-  selectError,
   selectIsLoading,
   selectIsLoadingPage,
 } from '../../services/selectors/productsSelectors';
@@ -29,7 +28,7 @@ const MainPage = () => {
   const products = useAppSelector(filteredProductsFullInfo);
   const isLoading = useAppSelector(selectIsLoading);
   const isLoadingPage = useAppSelector(selectIsLoadingPage);
-  const error = useAppSelector(selectError);
+  // const error = useAppSelector(selectError);
   const price = useAppSelector(selectPrice);
   const searchValue = useAppSelector(selectSearchValue);
   const currentPage = useAppSelector(selectCurrentPage);
@@ -61,9 +60,9 @@ const MainPage = () => {
     );
   }
 
-  if (error) {
-    return <div className={s.container}>{error}</div>;
-  }
+  // if (error) {
+  //   return <div className={s.container}>Ошибка{error}</div>;
+  // }
 
   const onChangePage: PaginationProps['onChange'] = pageNumber => {
     console.log('Page: ', pageNumber);
@@ -75,7 +74,7 @@ const MainPage = () => {
       <SearchInput />
       <div className={s.container}>
         <FiltersWrapper />
-        <ProductsWrapper products={products} isLoading={isLoading}/>
+        <ProductsWrapper products={products} isLoading={isLoading} />
       </div>
       <Pagination
         defaultCurrent={1}

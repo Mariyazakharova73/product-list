@@ -1,4 +1,4 @@
-import { Skeleton } from 'antd';
+import { Card } from 'antd';
 import { FC } from 'react';
 import { Product } from '../../types/types';
 import ProductCard from '../ProductCard/ProductCard';
@@ -13,10 +13,13 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ products, isLoading }) => {
   if (isLoading) {
     return (
       <div className={s.wrapper}>
-        <Skeleton />
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => {
+          return <Card className={s.card} loading={true} key={item} />;
+        })}
       </div>
     );
   }
+
   return (
     <div className={s.wrapper}>
       {products?.map(item => {

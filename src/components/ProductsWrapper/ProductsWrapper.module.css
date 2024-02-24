@@ -5,4 +5,15 @@
   justify-content: center;
   overflow-y: auto;
   height: 600px;
+  padding: 10px;
+}
+
+.card {
+  width: 250px;
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    width: 150px;
+  }
 }

@@ -22,9 +22,9 @@ export const fetchProductsIds = createAsyncThunk<
       ...(!!data && { params: data }),
     });
 
-    if (!res.data.result) {
-      throw new Error();
-    }
+    // if (!res.data.result) {
+    //   throw new Error();
+    // }
 
     return res.data.result;
   } catch (e) {

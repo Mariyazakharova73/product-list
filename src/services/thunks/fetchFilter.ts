@@ -29,9 +29,9 @@ export const fetchFilter = createAsyncThunk<string[], Ards, ThunkConfig<string>>
         params: obj,
       });
 
-      if (!res.data) {
-        throw new Error();
-      }
+      // if (!res.data) {
+      //   throw new Error();
+      // }
       return res.data.result;
     } catch (e) {
       console.log(e);
