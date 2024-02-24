@@ -1,31 +1,27 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { filteredBrands } from '../../services/selectors/filtersSelectors';
-// import { fetchProducts } from '../../services/thunks/fetchProducts';
-import { fetchBrands } from '../../services/thunks/fetchBrands';
+import { Skeleton } from 'antd';
+import { FC } from 'react';
+import { Product } from '../../types/types';
 import ProductCard from '../ProductCard/ProductCard';
 import s from './ProductsWrapper.module.css';
 
-export interface ProductsWrapperProps {}
+export interface ProductsWrapperProps {
+  products?: Product[];
+  isLoading: boolean;
+}
 
-const ProductsWrapper = () => {
-  const dispatch = useAppDispatch();
-
-  const brands = useAppSelector(filteredBrands);
-  console.log(brands);
-
-  useEffect(() => {
-    // dispatch(fetchProducts());
-    dispatch(fetchBrands());
-  }, [dispatch]);
-
+const ProductsWrapper: FC<ProductsWrapperProps> = ({ products, isLoading }) => {
+  if (isLoading) {
+    return (
+      <div className={s.wrapper}>
+        <Skeleton />
+      </div>
+    );
+  }
   return (
     <div className={s.wrapper}>
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
+      {products?.map(item => {
+        return <ProductCard key={item.id} item={item} />;
+      })}
     </div>
   );
 };

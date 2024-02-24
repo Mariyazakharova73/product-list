@@ -1,12 +1,19 @@
 import { Card } from 'antd';
+import { FC } from 'react';
+import { Product } from '../../types/types';
 import s from './ProductCard.module.css';
 
-const ProductCard = () => {
+export interface ProductCardProps {
+  item: Product;
+}
+
+const ProductCard: FC<ProductCardProps> = ({ item }) => {
   return (
-    <Card hoverable title="Card title" className={s.card}>
-      <p>Card content</p>
-      <p>Card content</p>
-      <p>Card content</p>
+    <Card hoverable title={item.product} className={s.card}>
+      <div className={s.content}>
+        <p className={s.brand}>{item.brand || 'Бренд не указан'}</p>
+        <p className={s.price}>{item.price}</p>
+      </div>
     </Card>
   );
 };

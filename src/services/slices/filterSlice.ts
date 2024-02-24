@@ -1,32 +1,40 @@
-// import type { PayloadAction } from '@reduxjs/toolkit';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { fetchBrands } from '../thunks/fetchBrands';
 
 export interface FiltersState {
-  currentPage: number;
-  searchValue?: string;
-  price?: number;
-  brand?: string;
-  brands: any;
   isLoading: boolean;
   error?: string;
+  //
+  brands?: string[] | null[];
+  //
+  currentPage: number;
+  searchValue?: string;
+  price?: string;
+  brand?: string;
 }
 
-const initialState = {
+const initialState: FiltersState = {
+  isLoading: false,
+  error: undefined,
+  //
+  brands: undefined,
+  //
   currentPage: 1,
   searchValue: undefined,
   price: undefined,
   brand: undefined,
-  brands: undefined,
-  isLoading: false,
-  error: undefined,
 };
 
 export const filtersSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
-    // setReadOnly: (state, action: PayloadAction<boolean>) => {},
+    setPrice: (state, action: PayloadAction<string>) => {
+      state.price = action.payload;
+    },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
   },
   extraReducers: builder => {
     builder
@@ -34,13 +42,15 @@ export const filtersSlice = createSlice({
         state.error = undefined;
         state.isLoading = true;
       })
-      .addCase(fetchBrands.fulfilled, (state, action: PayloadAction<any>) => {
-        state.brands = action.payload;
-        state.isLoading = false;
-      })
+      .addCase(
+        fetchBrands.fulfilled,
+        (state, action: PayloadAction<string[] | null[]>) => {
+          state.brands = action.payload;
+          state.isLoading = false;
+        },
+      )
 
       .addCase(fetchBrands.rejected, (state, action) => {
-        //@ts-ignore
         state.error = action.payload;
         state.isLoading = false;
       });

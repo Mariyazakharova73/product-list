@@ -1,18 +1,25 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchProducts } from '../thunks/fetchProducts';
-import { ProductsIds } from '../../types/types';
+import { fetchFilter } from '../thunks/fetchFilter';
+import { fetchItems } from '../thunks/fetchItems';
+import { fetchProductsIds } from '../thunks/fetchProductsIds';
 
 export interface ProductState {
-  data?: ProductsIds;
+  isLoadingPage: boolean;
   isLoading: boolean;
   error?: string;
+
+  allIds?: string[];
+  items?: string[];
 }
 
-const initialState = {
-  data: undefined,
+const initialState: ProductState = {
+  isLoadingPage: true,
   isLoading: false,
   error: undefined,
+
+  allIds: undefined,
+  items: undefined,
 };
 
 export const productsSlice = createSlice({
@@ -22,19 +29,48 @@ export const productsSlice = createSlice({
     // setReadOnly: (state, action: PayloadAction<boolean>) => {},
   },
   extraReducers: builder => {
+    // allIds
     builder
-      .addCase(fetchProducts.pending, state => {
+      .addCase(fetchProductsIds.pending, state => {
         state.error = undefined;
         state.isLoading = true;
       })
-      .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<ProductsIds>) => {
-        // @ts-ignore
-        state.data = action.payload;
+      .addCase(fetchProductsIds.fulfilled, (state, action: PayloadAction<string[]>) => {
+        state.allIds = action.payload;
+        state.isLoadingPage = false;
+      })
+
+      .addCase(fetchProductsIds.rejected, (state, action) => {
+        state.error = action.payload;
+        state.isLoadingPage = false;
+      });
+
+    builder
+      .addCase(fetchItems.pending, state => {
+        state.error = undefined;
+        state.isLoading = true;
+      })
+      .addCase(fetchItems.fulfilled, (state, action: PayloadAction<string[]>) => {
+        state.items = action.payload;
         state.isLoading = false;
       })
 
-      .addCase(fetchProducts.rejected, (state, action) => {
-        // @ts-ignore
+      .addCase(fetchItems.rejected, (state, action) => {
+        state.error = action.payload;
+        state.isLoading = false;
+      });
+    // filter
+    builder
+      .addCase(fetchFilter.pending, state => {
+        state.error = undefined;
+        state.isLoading = true;
+      })
+      .addCase(fetchFilter.fulfilled, (state, action: PayloadAction<string[]>) => {
+        state.items = action.payload;
+        state.isLoading = false;
+      })
+
+      .addCase(fetchFilter.rejected, (state, action) => {
         state.error = action.payload;
         state.isLoading = false;
       });

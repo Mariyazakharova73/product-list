@@ -1,36 +1,36 @@
+import { useMemo } from 'react';
+import { useAppSelector } from '../../hooks/hooks';
+import { filteredBrands } from '../../services/selectors/filtersSelectors';
 import s from './SelectBrand.module.css';
 
-import { Select } from 'antd';
+import { Select, Spin } from 'antd';
 
-const options = [
-  {
-    value: '1',
-    label: 'Not Identified',
-  },
-  {
-    value: '2',
-    label: 'Closed',
-  },
-  {
-    value: '3',
-    label: 'Communicated',
-  },
-  {
-    value: '4',
-    label: 'Identified',
-  },
-  {
-    value: '5',
-    label: 'Resolved',
-  },
-  {
-    value: '6',
-    label: 'Cancelled',
-  },
-];
+export interface Option {
+  label: string;
+  value: string;
+}
 
 const SelectBrand = () => {
-  return (
+  const brands = useAppSelector(filteredBrands);
+
+  const options = useMemo(() => {
+    return brands?.map(item => {
+      return { value: item, label: item };
+    });
+  }, [brands]);
+
+  const onChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
+
+  const onSearch = (value: string) => {
+    console.log('search:', value);
+  };
+
+  const filterOption = (input: string, option?: Option) =>
+    (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
+  return options?.length !== 0 ? (
     <Select
       className={s.select}
       showSearch
@@ -39,14 +39,13 @@ const SelectBrand = () => {
       // loading
       placeholder="Бренд"
       optionFilterProp="children"
-      filterOption={(input, option) => (option?.label ?? '').includes(input)}
-      filterSort={(optionA, optionB) =>
-        (optionA?.label ?? '')
-          .toLowerCase()
-          .localeCompare((optionB?.label ?? '').toLowerCase())
-      }
-      options={options}
+      onChange={onChange}
+      onSearch={onSearch}
+      filterOption={filterOption}
+      options={options as Option[]}
     />
+  ) : (
+    <Spin />
   );
 };
 

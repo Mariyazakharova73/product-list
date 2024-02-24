@@ -1,5 +1,5 @@
-export interface ProductsIds {
-  result: string[];
+export interface RequestResult<T> {
+  result: T;
 }
 
 export enum RequestActions {

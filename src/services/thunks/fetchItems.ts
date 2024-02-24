@@ -2,20 +2,19 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RequestActions, RequestResult } from '../../types/types';
 import { ThunkConfig } from '../store';
 
-type Brands = RequestResult<string[] | null[]>;
+type Items = RequestResult<string[]>;
 
-export const fetchBrands = createAsyncThunk<string[] | null[], void, ThunkConfig<string>>(
-  'filters/fetchBrands',
-  async (_, thunkAPI) => {
+export const fetchItems = createAsyncThunk<string[], string[], ThunkConfig<string>>(
+  'products/fetchItems',
+  async (arrIds, thunkAPI) => {
     const { extra, rejectWithValue } = thunkAPI;
-
     try {
-      const res = await extra.api.post<Brands>('/', {
-        action: RequestActions.GET_FIELDS,
-        params: { field: 'brand' },
+      const res = await extra.api.post<Items>('/', {
+        action: RequestActions.GET_ITEMS,
+        params: { ids: arrIds },
       });
 
-      if (!res.data) {
+      if (!res.data.result) {
         throw new Error();
       }
 
