@@ -4,9 +4,9 @@ import { fetchBrands } from '../thunks/fetchBrands';
 export interface FiltersState {
   isLoading: boolean;
   error?: string;
-  //
+  // data
   brands?: string[] | null[];
-  //
+  // filters
   currentPage: number;
   searchValue?: string;
   price?: string;
@@ -16,9 +16,9 @@ export interface FiltersState {
 const initialState: FiltersState = {
   isLoading: false,
   error: undefined,
-  //
+  // data
   brands: undefined,
-  //
+  // filters
   currentPage: 1,
   searchValue: undefined,
   price: undefined,
@@ -29,11 +29,32 @@ export const filtersSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
-    setPrice: (state, action: PayloadAction<string>) => {
-      state.price = action.payload;
-    },
     setCurrentPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
+    },
+    setPrice: (state, action: PayloadAction<string | undefined>) => {
+      state.searchValue = undefined;
+      state.brand = undefined;
+
+      state.price = action.payload;
+    },
+
+    setBrand: (state, action: PayloadAction<string | undefined>) => {
+      state.searchValue = undefined;
+      state.price = undefined;
+
+      state.brand = action.payload;
+    },
+    setSearchValue: (state, action: PayloadAction<string | undefined>) => {
+      state.price = undefined;
+      state.brand = undefined;
+
+      state.searchValue = action.payload;
+    },
+    clearFilters: state => {
+      state.searchValue = undefined;
+      state.price = undefined;
+      state.brand = undefined;
     },
   },
   extraReducers: builder => {
@@ -49,7 +70,6 @@ export const filtersSlice = createSlice({
           state.isLoading = false;
         },
       )
-
       .addCase(fetchBrands.rejected, (state, action) => {
         state.error = action.payload;
         state.isLoading = false;

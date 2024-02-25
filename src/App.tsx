@@ -1,8 +1,8 @@
-import { Layout, Spin } from 'antd';
+import { Button, Layout, Spin } from 'antd';
 import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import s from './App.module.css';
-import { routeConfig } from './utils/config/routeConfig';
+import { RoutePath, routeConfig } from './utils/config/routeConfig';
 
 const { Header, Footer, Content } = Layout;
 
@@ -10,9 +10,13 @@ function App() {
   return (
     <div className={s.page}>
       <Layout className={s.layout}>
-        <Header className={s.header}>Logo</Header>
+        <Header className={s.header}>
+          <Button type="link" href={RoutePath.main}>
+            Logo
+          </Button>
+        </Header>
         <Content className={s.content}>
-          <Suspense fallback={<Spin size="large" tip="Loading..."/>}>
+          <Suspense fallback={<Spin size="large" tip="Loading..." />}>
             <Routes>
               {Object.values(routeConfig).map(route => {
                 return (
@@ -22,7 +26,7 @@ function App() {
             </Routes>
           </Suspense>
         </Content>
-        <Footer className={s.footer}>Footer</Footer>
+        <Footer className={s.footer}>Product-list {new Date().getFullYear()}</Footer>
       </Layout>
     </div>
   );

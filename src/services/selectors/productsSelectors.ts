@@ -10,10 +10,10 @@ export const filteredAllIds = createSelector(selectAllIds, arr => {
 
 export const selectProductsFullInfo = (state: StateSchema) => state.products?.items;
 
-export const selectIsLoadingPage = (state: StateSchema) => state.products.isLoadingPage;
-export const selectIsLoading = (state: StateSchema) => state.products.isLoading;
+export const selectIsLoadingIds = (state: StateSchema) => state.products.isLoadingIds;
+export const selectIsLoadingItems = (state: StateSchema) => state.products.isLoadingItems;
 
-export const selectError = (state: StateSchema) => state.products.isLoading;
+export const selectError = (state: StateSchema) => state.products.error;
 
 export const filteredProductsFullInfo = createSelector(selectProductsFullInfo, arr => {
   if (arr) {

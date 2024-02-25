@@ -15,14 +15,14 @@ export const fetchBrands = createAsyncThunk<string[] | null[], void, ThunkConfig
         params: { field: 'brand' },
       });
 
-      if (!res.data) {
+      if (!res.data.result) {
         throw new Error();
       }
 
       return res.data.result;
     } catch (e) {
       console.log(e);
-      return rejectWithValue('Ошибка');
+      return rejectWithValue('Ошибка при загрузке брендов');
     }
   },
 );

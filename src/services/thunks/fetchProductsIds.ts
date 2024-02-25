@@ -22,15 +22,13 @@ export const fetchProductsIds = createAsyncThunk<
       ...(!!data && { params: data }),
     });
 
-    // if (!res.data.result) {
-    //   throw new Error();
-    // }
+    if (!res.data.result) {
+      throw new Error();
+    }
 
     return res.data.result;
   } catch (e) {
     console.log(e);
-    return rejectWithValue(
-      'Произошла ошибка при загрузке товаров. Попробуйте обновить страницу',
-    );
+    return rejectWithValue('Произошла ошибка при загрузке товаров');
   }
 });

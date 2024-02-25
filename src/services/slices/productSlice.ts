@@ -5,8 +5,9 @@ import { fetchItems } from '../thunks/fetchItems';
 import { fetchProductsIds } from '../thunks/fetchProductsIds';
 
 export interface ProductState {
-  isLoadingPage: boolean;
-  isLoading: boolean;
+  isLoadingIds: boolean;
+  isLoadingItems: boolean;
+
   error?: string;
 
   allIds?: string[];
@@ -14,8 +15,8 @@ export interface ProductState {
 }
 
 const initialState: ProductState = {
-  isLoadingPage: false,
-  isLoading: false,
+  isLoadingIds: false,
+  isLoadingItems: false,
   error: undefined,
 
   allIds: undefined,
@@ -33,46 +34,46 @@ export const productsSlice = createSlice({
     builder
       .addCase(fetchProductsIds.pending, state => {
         state.error = undefined;
-        state.isLoadingPage = true;
+        state.isLoadingIds = true;
       })
       .addCase(fetchProductsIds.fulfilled, (state, action: PayloadAction<string[]>) => {
         state.allIds = action.payload;
-        state.isLoadingPage = false;
+        state.isLoadingIds = false;
       })
 
       .addCase(fetchProductsIds.rejected, (state, action) => {
         state.error = action.payload;
-        state.isLoadingPage = false;
+        state.isLoadingIds = false;
       });
     // items
     builder
       .addCase(fetchItems.pending, state => {
         state.error = undefined;
-        state.isLoading = true;
+        state.isLoadingItems = true;
       })
       .addCase(fetchItems.fulfilled, (state, action: PayloadAction<string[]>) => {
         state.items = action.payload;
-        state.isLoading = false;
+        state.isLoadingItems = false;
       })
 
       .addCase(fetchItems.rejected, (state, action) => {
         state.error = action.payload;
-        state.isLoading = false;
+        state.isLoadingItems = false;
       });
     // filter
     builder
       .addCase(fetchFilter.pending, state => {
         state.error = undefined;
-        state.isLoading = true;
+        state.isLoadingIds = true;
       })
       .addCase(fetchFilter.fulfilled, (state, action: PayloadAction<string[]>) => {
-        state.items = action.payload;
-        state.isLoading = false;
+        state.allIds = action.payload;
+        state.isLoadingIds = false;
       })
 
       .addCase(fetchFilter.rejected, (state, action) => {
         state.error = action.payload;
-        state.isLoading = false;
+        state.isLoadingIds = false;
       });
   },
 });

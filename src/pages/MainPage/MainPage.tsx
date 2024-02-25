@@ -1,19 +1,19 @@
-import { Pagination, PaginationProps, Spin } from 'antd';
+import { Button, Pagination, PaginationProps, Spin, Typography } from 'antd';
 import { useEffect } from 'react';
 import FiltersWrapper from '../../components/FiltersWrapper/FiltersWrapper';
 import ProductsWrapper from '../../components/ProductsWrapper/ProductsWrapper';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {
+  selectBrandsError,
   selectCurrentPage,
-  selectPrice,
-  selectSearchValue,
 } from '../../services/selectors/filtersSelectors';
 import {
   filteredAllIds,
   filteredProductsFullInfo,
-  selectIsLoading,
-  selectIsLoadingPage,
+  selectError,
+  selectIsLoadingIds,
+  selectIsLoadingItems,
 } from '../../services/selectors/productsSelectors';
 import { filtersActions } from '../../services/slices/filterSlice';
 import { fetchBrands } from '../../services/thunks/fetchBrands';
@@ -21,19 +21,22 @@ import { fetchItems } from '../../services/thunks/fetchItems';
 import { fetchProductsIds } from '../../services/thunks/fetchProductsIds';
 import s from './MainPage.module.css';
 
+const { Title, Text } = Typography;
+
 const MainPage = () => {
   const dispatch = useAppDispatch();
 
   const allIds = useAppSelector(filteredAllIds);
   const products = useAppSelector(filteredProductsFullInfo);
-  const isLoading = useAppSelector(selectIsLoading);
-  const isLoadingPage = useAppSelector(selectIsLoadingPage);
-  // const error = useAppSelector(selectError);
-  const price = useAppSelector(selectPrice);
-  const searchValue = useAppSelector(selectSearchValue);
+  const isLoadingPageIds = useAppSelector(selectIsLoadingIds);
+  const isLoadingItems = useAppSelector(selectIsLoadingItems);
+  const error = useAppSelector(selectError);
+  const brandsError = useAppSelector(selectBrandsError);
   const currentPage = useAppSelector(selectCurrentPage);
 
-  console.log(isLoading, 'isLoading');
+  const refreshPage = () => {
+    window.location.reload();
+  };
 
   useEffect(() => {
     dispatch(fetchProductsIds(null));
@@ -43,29 +46,38 @@ const MainPage = () => {
   useEffect(() => {
     const getIdsforCurrentPage = (currentPage: number) => {
       const startIndex = (currentPage - 1) * 50;
-      const endIndex = currentPage * 50 - 1;
+      const endIndex = currentPage * 50;
       return allIds.slice(startIndex, endIndex);
     };
     const ids = getIdsforCurrentPage(currentPage);
     if (ids.length !== 0) {
+      console.log(allIds, 'allIds');
       dispatch(fetchItems(ids));
     }
-  }, [dispatch, price, currentPage, searchValue, allIds]);
+  }, [dispatch, currentPage, allIds]);
 
-  if (isLoadingPage) {
+  if (isLoadingPageIds) {
     return (
-      <div className={s.spinContainer}>
+      <main className={s.spinContainer}>
         <Spin size="large" />
-      </div>
+      </main>
     );
   }
 
-  // if (error) {
-  //   return <div className={s.container}>Ошибка{error}</div>;
-  // }
+  if (error || brandsError) {
+    return (
+      <main className={s.errorContainer}>
+        {error && <Title level={1}>{error}</Title>}
+        {brandsError && <Title level={1}>{brandsError}</Title>}
+        <Text>Попробуйте обновить страницу</Text>
+        <Button type="primary" onClick={refreshPage}>
+          Обновить
+        </Button>
+      </main>
+    );
+  }
 
   const onChangePage: PaginationProps['onChange'] = pageNumber => {
-    console.log('Page: ', pageNumber);
     dispatch(filtersActions.setCurrentPage(pageNumber));
   };
 
@@ -74,7 +86,7 @@ const MainPage = () => {
       <SearchInput />
       <div className={s.container}>
         <FiltersWrapper />
-        <ProductsWrapper products={products} isLoading={isLoading} />
+        <ProductsWrapper products={products} isLoading={isLoadingItems} />
       </div>
       <Pagination
         defaultCurrent={1}

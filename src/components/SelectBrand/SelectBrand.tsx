@@ -1,9 +1,12 @@
 import { useMemo } from 'react';
-import { useAppSelector } from '../../hooks/hooks';
-import { filteredBrands } from '../../services/selectors/filtersSelectors';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { filteredBrands, selectBrand } from '../../services/selectors/filtersSelectors';
 import s from './SelectBrand.module.css';
 
 import { Select, Spin } from 'antd';
+import { filtersActions } from '../../services/slices/filterSlice';
+import { fetchFilter } from '../../services/thunks/fetchFilter';
+import { fetchProductsIds } from '../../services/thunks/fetchProductsIds';
 
 export interface Option {
   label: string;
@@ -12,6 +15,8 @@ export interface Option {
 
 const SelectBrand = () => {
   const brands = useAppSelector(filteredBrands);
+  const dispatch = useAppDispatch();
+  const brandValue = useAppSelector(selectBrand);
 
   const options = useMemo(() => {
     return brands?.map(item => {
@@ -20,11 +25,15 @@ const SelectBrand = () => {
   }, [brands]);
 
   const onChange = (value: string) => {
-    console.log(`selected ${value}`);
+    if (value) {
+      dispatch(filtersActions.setBrand(value));
+      dispatch(fetchFilter({ brand: value }));
+    }
   };
 
-  const onSearch = (value: string) => {
-    console.log('search:', value);
+  const onClear = () => {
+    dispatch(filtersActions.clearFilters());
+    dispatch(fetchProductsIds(null));
   };
 
   const filterOption = (input: string, option?: Option) =>
@@ -32,15 +41,15 @@ const SelectBrand = () => {
 
   return options?.length !== 0 ? (
     <Select
+      onClear={onClear}
       className={s.select}
+      value={brandValue}
       showSearch
       allowClear
       style={{ width: 150 }}
-      // loading
       placeholder="Бренд"
       optionFilterProp="children"
       onChange={onChange}
-      onSearch={onSearch}
       filterOption={filterOption}
       options={options as Option[]}
     />

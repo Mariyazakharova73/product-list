@@ -14,14 +14,14 @@ export const fetchItems = createAsyncThunk<string[], string[], ThunkConfig<strin
         params: { ids: arrIds },
       });
 
-      // if (!res.data.result) {
-      //   throw new Error();
-      // }
+      if (!res.data.result) {
+        throw new Error();
+      }
 
       return res.data.result;
     } catch (e) {
       console.log(e);
-      return rejectWithValue('Ошибка');
+      return rejectWithValue('Ошибка при загрузке карточек');
     }
   },
 );

@@ -9,11 +9,11 @@ interface Price {
 }
 
 interface Product {
-  price: string;
+  product: string;
 }
 
 interface Brand {
-  price: string;
+  brand: string;
 }
 
 type Ards = Price | Product | Brand;
@@ -29,13 +29,13 @@ export const fetchFilter = createAsyncThunk<string[], Ards, ThunkConfig<string>>
         params: obj,
       });
 
-      // if (!res.data) {
-      //   throw new Error();
-      // }
+      if (!res.data) {
+        throw new Error();
+      }
       return res.data.result;
     } catch (e) {
       console.log(e);
-      return rejectWithValue('Ошибка');
+      return rejectWithValue('Ошибка фильтрации');
     }
   },
 );
