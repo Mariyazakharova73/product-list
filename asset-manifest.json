@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/Mariyazakharova73/product-list/static/css/main.60ceac35.css",
-    "main.js": "/Mariyazakharova73/product-list/static/js/main.15a7ecf5.js",
-    "index.html": "/Mariyazakharova73/product-list/index.html",
-    "main.60ceac35.css.map": "/Mariyazakharova73/product-list/static/css/main.60ceac35.css.map",
-    "main.15a7ecf5.js.map": "/Mariyazakharova73/product-list/static/js/main.15a7ecf5.js.map"
+    "main.css": "/product-list/static/css/main.60ceac35.css",
+    "main.js": "/product-list/static/js/main.15a7ecf5.js",
+    "index.html": "/product-list/index.html",
+    "main.60ceac35.css.map": "/product-list/static/css/main.60ceac35.css.map",
+    "main.15a7ecf5.js.map": "/product-list/static/js/main.15a7ecf5.js.map"
   },
   "entrypoints": [
     "static/css/main.60ceac35.css",
