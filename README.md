@@ -35,4 +35,4 @@
 
 </details>
 
-[Ссылка на проект product-list]()
+[Ссылка на проект product-list](https://mariyazakharova73.github.io/product-list/)
