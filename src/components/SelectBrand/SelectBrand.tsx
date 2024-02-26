@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { filteredBrands, selectBrand } from '../../services/selectors/filtersSelectors';
-import s from './SelectBrand.module.css';
 
 import { Select, Spin } from 'antd';
 import { filtersActions } from '../../services/slices/filterSlice';
@@ -42,7 +41,6 @@ const SelectBrand = () => {
   return options?.length !== 0 ? (
     <Select
       onClear={onClear}
-      className={s.select}
       value={brandValue}
       showSearch
       allowClear

@@ -16,6 +16,7 @@
     "@types/react-router-dom": "^5.3.3",
     "antd": "^5.14.1",
     "axios": "^1.6.7",
+    "axios-retry": "^4.0.0",
     "md5": "^2.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -33,7 +34,6 @@
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
-
   },
   "browserslist": {
     "production": [

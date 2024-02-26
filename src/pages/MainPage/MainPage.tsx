@@ -8,7 +8,6 @@ import { selectCurrentPage } from '../../services/selectors/filtersSelectors';
 import {
   filteredAllIds,
   selectIsLoadingIds,
-  selectItemsError,
 } from '../../services/selectors/productsSelectors';
 import { filtersActions } from '../../services/slices/filterSlice';
 import { fetchBrands } from '../../services/thunks/fetchBrands';
@@ -22,7 +21,6 @@ const MainPage = () => {
   const allIds = useAppSelector(filteredAllIds);
   const currentPage = useAppSelector(selectCurrentPage);
   const isLoadingPageIds = useAppSelector(selectIsLoadingIds);
-  const itemsError = useAppSelector(selectItemsError);
 
   useEffect(() => {
     dispatch(fetchProductsIds());
@@ -36,10 +34,10 @@ const MainPage = () => {
       return allIds.slice(startIndex, endIndex);
     };
     const ids = getIdsforCurrentPage(currentPage);
-    if (ids.length !== 0 || itemsError) {
+    if (ids.length !== 0) {
       dispatch(fetchItems(ids));
     }
-  }, [dispatch, currentPage, allIds, itemsError]);
+  }, [dispatch, currentPage, allIds]);
 
   if (isLoadingPageIds) {
     return (
