@@ -1,21 +1,36 @@
-import { Card } from 'antd';
+import { Card, Typography } from 'antd';
 import { FC } from 'react';
-import { Product } from '../../types/types';
+import { useAppSelector } from '../../hooks/hooks';
+import {
+  filteredAllIds,
+  filteredProductsFullInfo,
+  selectIsLoadingItems,
+} from '../../services/selectors/productsSelectors';
+import { testArr } from '../../utils/constants';
 import ProductCard from '../ProductCard/ProductCard';
 import s from './ProductsWrapper.module.css';
 
-export interface ProductsWrapperProps {
-  products?: Product[];
-  isLoading: boolean;
-}
+const { Title } = Typography;
 
-const ProductsWrapper: FC<ProductsWrapperProps> = ({ products, isLoading }) => {
-  if (isLoading) {
+const ProductsWrapper: FC = () => {
+  const products = useAppSelector(filteredProductsFullInfo);
+  const isLoadingItems = useAppSelector(selectIsLoadingItems);
+  const allIds = useAppSelector(filteredAllIds);
+
+  if (isLoadingItems) {
     return (
       <div className={s.wrapper}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => {
-          return <Card className={s.card} loading={true} key={item} />;
+        {testArr.map((_, index) => {
+          return <Card className={s.card} loading={true} key={index} />;
         })}
+      </div>
+    );
+  }
+
+  if (products?.length === 0 || allIds.length === 0) {
+    return (
+      <div className={s.wrapperError}>
+        <Title level={3}>Продукты не найдены</Title>
       </div>
     );
   }

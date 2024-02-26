@@ -11,8 +11,9 @@ const ProductCard: FC<ProductCardProps> = ({ item }) => {
   return (
     <Card hoverable title={item.product} className={s.card}>
       <div className={s.content}>
-        <p className={s.brand}>{item.brand || 'Бренд не указан'}</p>
-        <p className={s.price}>{item.price}</p>
+        <p className={s.brand}>Id: {item.id}</p>
+        <p className={s.brand}>Бренд: {item.brand || 'не указан'}</p>
+        <p className={s.price}>Цена: {item.price} ₽</p>
       </div>
     </Card>
   );

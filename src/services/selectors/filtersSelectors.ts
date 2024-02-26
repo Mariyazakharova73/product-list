@@ -8,11 +8,11 @@ export const selectSearchValue = (state: StateSchema) => state?.filters?.searchV
 export const selectBrand = (state: StateSchema) => state?.filters?.brand;
 
 export const filteredBrands = createSelector(getBrands, arr => {
-  if (!arr) return;
-  // @ts-ignore
-  const filteredArr = arr.filter((item: string | null) => item !== null);
-  const newSet = new Set(filteredArr);
-  return Array.from(newSet);
+  if (arr && arr.length !== 0) {
+    const filteredArr = arr?.filter((item: string | null) => item !== null);
+    const newSet = new Set(filteredArr);
+    return Array.from(newSet);
+  }
 });
 
 export const selectBrandsError = (state: StateSchema) => state?.filters?.error;

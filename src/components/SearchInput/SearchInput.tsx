@@ -1,5 +1,6 @@
 import { Input } from 'antd';
 import type { SearchProps } from 'antd/es/input/Search';
+import { ChangeEvent, memo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { selectSearchValue } from '../../services/selectors/filtersSelectors';
 import { filtersActions } from '../../services/slices/filterSlice';
@@ -13,15 +14,18 @@ const SearchInput = () => {
   const dispatch = useAppDispatch();
   const searchValue = useAppSelector(selectSearchValue);
 
+  const onChangeSearchValue = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(filtersActions.setSearchValue(e.target.value));
+  };
+
   const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
     if (value) {
-      dispatch(filtersActions.setSearchValue(value));
       dispatch(fetchFilter({ product: value }));
     }
 
     if (info?.source === 'clear') {
       dispatch(filtersActions.clearFilters());
-      dispatch(fetchProductsIds(null));
+      dispatch(fetchProductsIds());
     }
   };
 
@@ -34,8 +38,9 @@ const SearchInput = () => {
       width={300}
       onSearch={onSearch}
       enterButton
+      onChange={onChangeSearchValue}
     />
   );
 };
 
-export default SearchInput;
+export default memo(SearchInput);

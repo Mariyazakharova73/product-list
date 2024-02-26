@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RequestActions, RequestResult } from '../../types/types';
+import { Product, RequestActions, RequestResult } from '../../types/types';
 import { ThunkConfig } from '../store';
 
-type Items = RequestResult<string[]>;
+type Items = RequestResult<Product[]>;
 
-export const fetchItems = createAsyncThunk<string[], string[], ThunkConfig<string>>(
+export const fetchItems = createAsyncThunk<Product[], string[], ThunkConfig<string>>(
   'products/fetchItems',
   async (arrIds, thunkAPI) => {
     const { extra, rejectWithValue } = thunkAPI;

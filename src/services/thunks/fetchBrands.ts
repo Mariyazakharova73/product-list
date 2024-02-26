@@ -2,9 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RequestActions, RequestResult } from '../../types/types';
 import { ThunkConfig } from '../store';
 
-type Brands = RequestResult<string[] | null[]>;
+type Brands = RequestResult<(string | null)[]>;
 
-export const fetchBrands = createAsyncThunk<string[] | null[], void, ThunkConfig<string>>(
+export const fetchBrands = createAsyncThunk<(string | null)[], void, ThunkConfig<string>>(
   'filters/fetchBrands',
   async (_, thunkAPI) => {
     const { extra, rejectWithValue } = thunkAPI;

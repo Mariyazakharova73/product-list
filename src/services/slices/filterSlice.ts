@@ -5,7 +5,7 @@ export interface FiltersState {
   isLoading: boolean;
   error?: string;
   // data
-  brands?: string[] | null[];
+  brands?: (string | null)[];
   // filters
   currentPage: number;
   searchValue?: string;
@@ -33,6 +33,7 @@ export const filtersSlice = createSlice({
       state.currentPage = action.payload;
     },
     setPrice: (state, action: PayloadAction<string | undefined>) => {
+      state.currentPage = 1;
       state.searchValue = undefined;
       state.brand = undefined;
 
@@ -40,12 +41,14 @@ export const filtersSlice = createSlice({
     },
 
     setBrand: (state, action: PayloadAction<string | undefined>) => {
+      state.currentPage = 1;
       state.searchValue = undefined;
       state.price = undefined;
 
       state.brand = action.payload;
     },
     setSearchValue: (state, action: PayloadAction<string | undefined>) => {
+      state.currentPage = 1;
       state.price = undefined;
       state.brand = undefined;
 
@@ -65,7 +68,7 @@ export const filtersSlice = createSlice({
       })
       .addCase(
         fetchBrands.fulfilled,
-        (state, action: PayloadAction<string[] | null[]>) => {
+        (state, action: PayloadAction<(string | null)[]>) => {
           state.brands = action.payload;
           state.isLoading = false;
         },

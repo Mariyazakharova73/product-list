@@ -33,7 +33,7 @@ const SelectBrand = () => {
 
   const onClear = () => {
     dispatch(filtersActions.clearFilters());
-    dispatch(fetchProductsIds(null));
+    dispatch(fetchProductsIds());
   };
 
   const filterOption = (input: string, option?: Option) =>

@@ -1,5 +1,6 @@
 .card {
   width: 250px;
+  max-height: 220px;
 }
 
 .content {
@@ -17,10 +18,4 @@
   align-self: end;
   color: var(--app-color-text);
   font-weight: 500;
-}
-
-@media screen and (max-width: 768px) {
-  .card {
-    width: 150px;
-  }
 }
